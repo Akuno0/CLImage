@@ -1,6 +1,7 @@
 // Основная логика
 package internal
 
-func run(file_id string) {
+func Run(fileID string) error {
 
+	return nil
 }
