@@ -10,7 +10,7 @@ import (
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run main.go <file_id>")
+		fmt.Println("go run main.go <file_id>")
 		os.Exit(1)
 	}
 
@@ -21,5 +21,5 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println("Successfull")
+	fmt.Println("Success")
 }
