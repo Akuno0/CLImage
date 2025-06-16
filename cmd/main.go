@@ -2,6 +2,7 @@
 package main
 
 import (
+	//"context"
 	"fmt"
 	"os"
 
@@ -16,10 +17,27 @@ func main() {
 
 	fileID := os.Args[1]
 
-	if err := internal.Run(fileID); err != nil {
-		fmt.Printf("Error: %v\n", err)
+	// Инициализация подключения к Postgres
+	db, err := internal.InitDB()
+	if err != nil {
+		fmt.Printf("Ошибка инициализации: %v\n", err)
+		os.Exit(1)
+	}
+	defer db.Close()
+
+	// Получение hash
+	hash, err := internal.GetHash(fileID)
+	if err != nil {
+		fmt.Printf("Ошибка получения хэша: %v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Println("Success")
+	// Генерация
+	err = internal.Run(hash)
+	if err != nil {
+		fmt.Printf("Ошибка генерации: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Println("Готво.")
 }
