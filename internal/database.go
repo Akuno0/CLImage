@@ -5,23 +5,23 @@ import (
 	//"context"
 	"database/sql"
 	"fmt"
-	"log"
+
+	_ "github.com/lib/pq"
 )
 
-func InitDB() {
-	connStr := "user=user password=123 dbname=db host=localhost port=5432 sslmode=disable"
+func InitDB() (*sql.DB, error) {
+	connStr := "user=postgres password=12345678 dbname=music host=localhost port=5432 sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	defer db.Close()
 
 	if err := db.Ping(); err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	fmt.Println("Подключено")
 
-	return
+	return db, nil
 }
 
 func GetHash(fileID string) {
