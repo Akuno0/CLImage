@@ -15,7 +15,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	//fileID := os.Args[1]
+	fileID := os.Args[1]
 
 	// Инициализация подключения к Postgres
 	db, err := internal.InitDB()
@@ -25,9 +25,8 @@ func main() {
 	}
 	defer db.Close()
 
-	db.Query("select * from files")
 	// Получение hash
-	/*hash, err := internal.GetHash(fileID)
+	hash, err := internal.GetHash(db, fileID)
 	if err != nil {
 		fmt.Printf("Ошибка получения хэша: %v\n", err)
 		os.Exit(1)
@@ -38,7 +37,7 @@ func main() {
 	if err != nil {
 		fmt.Printf("Ошибка генерации: %v\n", err)
 		os.Exit(1)
-	}*/
+	}
 
 	fmt.Println("Готво.")
 }

@@ -2,7 +2,6 @@
 package internal
 
 import (
-	//"context"
 	"database/sql"
 	"fmt"
 
@@ -10,7 +9,7 @@ import (
 )
 
 func InitDB() (*sql.DB, error) {
-	connStr := "user=postgres password=12345678 dbname=music host=localhost port=5432 sslmode=disable"
+	connStr := "user=postgres password=12345678 dbname=images host=localhost port=5432 sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		return nil, err
@@ -24,33 +23,14 @@ func InitDB() (*sql.DB, error) {
 	return db, nil
 }
 
-func GetHash(fileID string) {
-	/*file, err := os.Open(fileID)
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
+func GetHash(db *sql.DB, fileID string) (string, error) {
+	query := "SELECT hash FROM files WHERE id = $" + fileID + ";"
+	row := db.QueryRow(query, fileID)
 
-	// Декодирование изображения в объект image.Image
-	img, _, err := image.Decode(file)
-	if err != nil {
-		panic(err)
+	var hash string
+	if err := row.Scan(&hash); err != nil {
+		return "", fmt.Errorf("не удалось получить хэш: %v", err)
 	}
 
-	// Получение байт изображения
-	buf := new(bytes.Buffer)
-	if err := jpeg.Encode(buf, img, nil); err != nil {
-		panic(err)
-	}
-	imageData := buf.Bytes()
-
-	// Вычисление хэша SHA256
-	hash := sha256.New()
-	hash.Write(imageData)
-	hashBytes := hash.Sum(nil)
-
-	hashString := fmt.Sprintf("%x", hashBytes)
-
-	fmt.Println("Хэш изображения:", hashString)*/
-	return
+	return hash, nil
 }
