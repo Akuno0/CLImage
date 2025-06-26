@@ -18,13 +18,12 @@ func InitDB() (*sql.DB, error) {
 	if err := db.Ping(); err != nil {
 		return nil, err
 	}
-	fmt.Println("Подключено")
 
 	return db, nil
 }
 
 func GetHash(db *sql.DB, fileID string) (string, error) {
-	query := "SELECT hash FROM files WHERE id = $" + fileID + ";"
+	query := "SELECT hash FROM files WHERE id = $1;"
 	row := db.QueryRow(query, fileID)
 
 	var hash string
